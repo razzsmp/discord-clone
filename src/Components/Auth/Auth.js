@@ -6,6 +6,7 @@ import { Route, Switch } from "react-router-dom";
 import { withRouter } from "react-router";
 import "./Auth.style.scss";
 import firebase from "../../firebase";
+import random from "simple-random-number-generator"
 
 class Auth extends React.Component {
   state = {
@@ -23,6 +24,11 @@ class Auth extends React.Component {
   };
 
   register = (email, password, username) => {
+    let params = {
+      min: 1000,
+      max: 9999,
+      integer: true
+    };
     this.setState({ registerError: null });
     firebase
       .auth()
@@ -31,7 +37,7 @@ class Auth extends React.Component {
         user.user
           .updateProfile({
             displayName: username,
-            photoURL: `https://www.freepnglogos.com/uploads/discord-logo-png/seven-kingdoms-9.png`
+            photoURL: `https://www.discordstudio.live/logo512.png`
           })
           .then(() => {
             firebase
@@ -41,7 +47,8 @@ class Auth extends React.Component {
               .set({
                 profile: {
                   name: user.user.displayName,
-                  avatar: user.user.photoURL
+                  avatar: user.user.photoURL,
+                  tag: random(params)
                 }
               })
               .then(() => console.log("success"));
